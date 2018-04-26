@@ -1,17 +1,17 @@
 package app.besafx.com.smartmanager;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
-import app.besafx.com.smartmanager.entity.Company;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.http.ResponseEntity;
+import app.besafx.com.smartmanager.entity.Notification;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
@@ -26,30 +26,59 @@ public class Main extends AppCompatActivity {
         setContentView(R.layout.main);
     }
 
-    /** Called when the user taps the login button */
+    @Override
+    protected void onStart() {
+        super.onStart();
+        checkConnection();
+    }
+
+    private void checkConnection() {
+        TextView txtView_error_message = (TextView) findViewById(R.id.error_message);
+        //Check connection is a live
+        if (!isInternetAvailable()) {
+            txtView_error_message.setText("Check You Connection Please.");
+            txtView_error_message.setTextColor(Color.parseColor("#d9e5f3"));
+            txtView_error_message.setBackgroundColor(Color.parseColor("#E91E63"));
+            txtView_error_message.setVisibility(View.VISIBLE);
+            return;
+        }
+    }
+
     public void login(View view) {
-        Intent intent = new Intent(this, TasksView.class);
+
+        checkConnection();
+
         EditText editText_userName = (EditText) findViewById(R.id.user_name);
         EditText editText_userPassword = (EditText) findViewById(R.id.user_password);
         USER_NAME = editText_userName.getText().toString();
         USER_PASS = editText_userPassword.getText().toString();
-        intent.putExtra("USER_NAME", USER_NAME);
-        intent.putExtra("USER_PASS", USER_PASS);
 
-        TextView txtView_error_message = (TextView) findViewById(R.id.error_message);
-        txtView_error_message.setVisibility(View.VISIBLE);
-//        startActivity(intent);
+        //Call login from web services
+        new RestLogin(USER_NAME, USER_PASS).execute();
     }
 
-    private class HttpRequestTask extends AsyncTask<Void, Void, Company> {
+    public boolean isInternetAvailable() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
+    }
+
+    private class RestLogin extends AsyncTask<Void, Void, Notification> {
+
+        private String userName, password;
+
+        public RestLogin(String userName, String password) {
+            this.userName = userName;
+            this.password = password;
+        }
+
         @Override
-        protected Company doInBackground(Void... params) {
+        protected Notification doInBackground(Void... params) {
             try {
-                final String url = "http://192.168.1.24:8080/api/company/get";
+                final String url = "https://ararhni.herokuapp.com/api/android/login/" + userName + "/" + password;
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                Company greeting = restTemplate.getForObject(url, Company.class);
-                return greeting;
+                Notification notification = restTemplate.getForObject(url, Notification.class);
+                return notification;
             } catch (Exception e) {
                 Log.e("MainActivity", e.getMessage(), e);
             }
@@ -58,9 +87,27 @@ public class Main extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(Company greeting) {
-//            TextView greetingIdText = (TextView) findViewById(R.id.txt_greeting);
-//            greetingIdText.setText(greeting.getName());
+        protected void onPostExecute(Notification notification) {
+            TextView txtView_error_message = (TextView) findViewById(R.id.error_message);
+            txtView_error_message.setText(notification.getMessage());
+            txtView_error_message.setTextColor(Color.parseColor("#d9e5f3"));
+
+            switch (notification.getCode()){
+                case "SUCCESS":
+                    txtView_error_message.setBackgroundColor(Color.parseColor("#2E7D32"));
+
+                    Intent intent = new Intent(getApplicationContext(), TasksView.class);
+                    intent.putExtra("USER_NAME", USER_NAME);
+                    intent.putExtra("USER_PASS", USER_PASS);
+                    startActivity(intent);
+
+                    break;
+                case "FAILED":
+                    txtView_error_message.setBackgroundColor(Color.parseColor("#E91E63"));
+                    break;
+            }
+
+            txtView_error_message.setVisibility(View.VISIBLE);
         }
 
     }
