@@ -1,19 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/item_pending_incoming_tasks"
-            android:title="المهام الصادرة / تحت التنفيذ"
-            android:icon="@drawable/flag" />
-        <item
-            android:id="@+id/item_auto_incoming_tasks"
-            android:title="المهام الصادرة / المغلقة تلقائي"
-            android:icon="@drawable/battery_alert" />
-        <item
-            android:id="@+id/item_archive_incoming_tasks"
-            android:title="المهام الصادرة / الارشيف"
-            android:icon="@drawable/archive" />
-    </group>
+    <item
+        android:title="المهام الصادرة"
+        app:showAsAction="always|withText"
+        android:icon="@drawable/ic_assignment_black_24dp"
+        android:orderInCategory="1">
+        <menu>
+            <group
+                android:id="@+id/group1"
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/item_pending_incoming_tasks"
+                    android:title="تحت التنفيذ"
+                    android:icon="@drawable/flag" />
+                <item
+                    android:id="@+id/item_auto_incoming_tasks"
+                    android:title="المغلقة تلقائي"
+                    android:icon="@drawable/battery_alert" />
+                <item
+                    android:id="@+id/item_archive_incoming_tasks"
+                    android:title="الارشيف"
+                    android:icon="@drawable/archive" />
+            </group>
+        </menu>
+    </item>
+
+    <item
+        android:title="المهام الواردة"
+        app:showAsAction="always|withText"
+        android:icon="@drawable/ic_assignment_black_24dp"
+        android:orderInCategory="1">
+        <menu>
+            <group
+                android:id="@+id/group2"
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/item_pending_outgoing_tasks"
+                    android:title="تحت التنفيذ"
+                    android:icon="@drawable/flag" />
+                <item
+                    android:id="@+id/item_auto_outgoing_tasks"
+                    android:title="المغلقة تلقائي"
+                    android:icon="@drawable/battery_alert" />
+                <item
+                    android:id="@+id/item_archive_outgoing_tasks"
+                    android:title="الارشيف"
+                    android:icon="@drawable/archive" />
+            </group>
+        </menu>
+    </item>
 
 </menu>
