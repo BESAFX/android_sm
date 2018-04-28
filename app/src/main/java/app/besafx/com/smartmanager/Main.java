@@ -10,7 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import app.besafx.com.smartmanager.entity.Notification;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
@@ -36,7 +38,7 @@ public class Main extends AppCompatActivity {
         TextView txtView_error_message = (TextView) findViewById(R.id.error_message);
         //Check connection is a live
         if (!isInternetAvailable()) {
-            txtView_error_message.setText("Check You Connection Please.");
+            txtView_error_message.setText("تأكد من اتصالك بالأنترنت");
             txtView_error_message.setTextColor(Color.parseColor("#d9e5f3"));
             txtView_error_message.setBackgroundColor(Color.parseColor("#E91E63"));
             txtView_error_message.setVisibility(View.VISIBLE);
@@ -48,13 +50,22 @@ public class Main extends AppCompatActivity {
 
         checkConnection();
 
+        storeUserLogin();
+    }
+
+    private void storeUserLogin() {
         EditText editText_userName = (EditText) findViewById(R.id.user_name);
         EditText editText_userPassword = (EditText) findViewById(R.id.user_password);
         USER_NAME = editText_userName.getText().toString();
         USER_PASS = editText_userPassword.getText().toString();
 
-        //Call login from web services
-        new RestLogin(USER_NAME, USER_PASS).execute();
+        if(USER_NAME.matches("") || USER_PASS.matches("")){
+            Toast.makeText(this, "تأكد من اكتمال كافة الحقول المطلوبة", Toast.LENGTH_SHORT).show();
+            return;
+        }else{
+            //Call login from web services
+            new RestLogin(USER_NAME, USER_PASS).execute();
+        }
     }
 
     public boolean isInternetAvailable() {
@@ -72,7 +83,16 @@ public class Main extends AppCompatActivity {
         }
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.d("TASK", "START TASK");
+            ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
         protected Notification doInBackground(Void... params) {
+            Log.d("TASK", "DO TASK");
             try {
                 final String url = "https://ararhni.herokuapp.com/api/android/login/" + userName + "/" + password;
                 RestTemplate restTemplate = new RestTemplate();
@@ -88,6 +108,9 @@ public class Main extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Notification notification) {
+            Log.d("TASK", "END TASK");
+            ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+            progressBar.setVisibility(View.INVISIBLE);
             TextView txtView_error_message = (TextView) findViewById(R.id.error_message);
             txtView_error_message.setText(notification.getMessage());
             txtView_error_message.setTextColor(Color.parseColor("#d9e5f3"));
