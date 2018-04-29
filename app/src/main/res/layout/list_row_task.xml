@@ -12,7 +12,7 @@
 
         <TextView
             android:textColor="#FFFFFF"
-            android:id="@+id/id"
+            android:id="@+id/task_code"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="id" android:textStyle="bold"
@@ -28,7 +28,7 @@
 
         <TextView
             android:textColor="#FFFFFF"
-            android:id="@+id/categoryId"
+            android:id="@+id/task_to_person"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="categoryId"
@@ -41,7 +41,7 @@
             android:layout_weight="1"
             android:textColor="#FFFFFF"
             android:gravity="right"
-            android:id="@+id/description"
+            android:id="@+id/task_from_person"
             android:text="description"
             android:height="20dp" />
     </TableRow>

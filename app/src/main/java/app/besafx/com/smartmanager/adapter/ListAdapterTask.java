@@ -38,13 +38,13 @@ public class ListAdapterTask extends ArrayAdapter<Task> {
 
             Log.d(TAG, currentTask.getTitle());
 
-            TextView tt1 = (TextView) listItem.findViewById(R.id.id);
-            TextView tt2 = (TextView) listItem.findViewById(R.id.categoryId);
-            TextView tt3 = (TextView) listItem.findViewById(R.id.description);
+            TextView task_code = (TextView) listItem.findViewById(R.id.task_code);
+            TextView task_from_person = (TextView) listItem.findViewById(R.id.task_from_person);
+            TextView task_to_person = (TextView) listItem.findViewById(R.id.task_to_person);
 
-            tt1.setText(currentTask.getId().toString());
-            tt2.setText(currentTask.getCode());
-            tt3.setText(currentTask.getTitle());
+            task_code.setText(currentTask.getCode().toString());
+            task_from_person.setText(currentTask.getTitle());
+            task_to_person.setText(currentTask.getTitle());
         }
 
         return listItem;
