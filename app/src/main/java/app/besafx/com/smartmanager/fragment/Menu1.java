@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import app.besafx.com.smartmanager.R;
 import app.besafx.com.smartmanager.activity.LoaderFragment;
 import app.besafx.com.smartmanager.activity.Main;
+import app.besafx.com.smartmanager.adapter.ListAdapterTask;
 import app.besafx.com.smartmanager.entity.Person;
 import app.besafx.com.smartmanager.entity.Task;
 import com.google.common.collect.Lists;
@@ -31,7 +32,7 @@ public class Menu1 extends LoaderFragment {
 
     private ArrayAdapter<Person> myPersonsAdapter;
 
-    private ArrayAdapter<Task> myTasksAdapter;
+    private ListAdapterTask myTasksAdapter;
 
     @Nullable
     @Override
@@ -92,7 +93,7 @@ public class Menu1 extends LoaderFragment {
         ListView listView = (ListView) getView().findViewById(R.id.listView_persons);
 
         // Create an ArrayAdapter using the string array and a default listView layout
-        myTasksAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, new ArrayList<Task>());
+        myTasksAdapter = new ListAdapterTask(getContext(), R.layout.list_row_task, new ArrayList<Task>());
 
         // Apply the myTasksAdapter to the listView
         listView.setAdapter(myTasksAdapter);
@@ -160,7 +161,9 @@ public class Menu1 extends LoaderFragment {
 
         @Override
         protected Task[] doInBackground(Void... params) {
-            final String url = getString(R.string.rest_url) + "/api/task/filter2?toPerson=" + selectedPerson.getId() + "&closeType=Pending";
+            final String url = getString(R.string.rest_url) + "/api/task/filter3?toPerson=" + selectedPerson.getId() + "&closeType=Pending";
+
+            Log.d(TAG, url);
 
             // Create a new RestTemplate instance
             RestTemplate restTemplate = new RestTemplate();
@@ -179,10 +182,9 @@ public class Menu1 extends LoaderFragment {
         @Override
         protected void onPostExecute(Task[] tasks) {
             dismissProgressDialog();
-            Log.d(TAG, "TASKS " + tasks.length);
-//            myTasksAdapter.clear();
-//            myTasksAdapter.addAll(Lists.newArrayList(tasks));
-//            myTasksAdapter.notifyDataSetChanged();
+            myTasksAdapter.clear();
+            myTasksAdapter.addAll(Lists.<Task>newArrayList(tasks));
+            myTasksAdapter.notifyDataSetChanged();
         }
 
     }
