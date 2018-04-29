@@ -24,6 +24,10 @@ public class Main extends LoaderActivity {
 
     protected static final String TAG = Main.class.getSimpleName();
 
+    public static HttpHeaders requestHeaders;
+
+    public static Person me;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,11 +102,11 @@ public class Main extends LoaderActivity {
 
         @Override
         protected Person doInBackground(Void... params) {
-            final String url = "http://192.168.1.24:8080/api/person/findActivePerson";
+            final String url = getString(R.string.rest_url) + "/api/person/findActivePerson";
 
             // Populate the HTTP Basic Authentication header with the username and password
             HttpAuthentication authHeader = new HttpBasicAuthentication(username, password);
-            HttpHeaders requestHeaders = new HttpHeaders();
+            requestHeaders = new HttpHeaders();
             requestHeaders.setAuthorization(authHeader);
             requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
@@ -123,6 +127,8 @@ public class Main extends LoaderActivity {
         @Override
         protected void onPostExecute(Person person) {
             dismissProgressDialog();
+
+            me = person;
 
             ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
             progressBar.setVisibility(View.INVISIBLE);

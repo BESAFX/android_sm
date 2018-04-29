@@ -2,12 +2,9 @@ package app.besafx.com.smartmanager.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import app.besafx.com.smartmanager.R;
 import app.besafx.com.smartmanager.entity.Person;
@@ -23,6 +21,8 @@ import app.besafx.com.smartmanager.fragment.Menu2;
 import app.besafx.com.smartmanager.fragment.Menu3;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    protected static final String TAG = Home.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

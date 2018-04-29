@@ -61,4 +61,9 @@ public class Person implements Serializable {
     private Double transportAllowance;
 
     private Date lastUpdate;
+
+    @Override
+    public String toString() {
+        return this.shortName;
+    }
 }
