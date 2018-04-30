@@ -13,16 +13,19 @@
                 android:id="@+id/group1"
                 android:checkableBehavior="single">
                 <item
-                    android:id="@+id/item_pending_incoming_tasks"
+                    android:id="@+id/item_pending_outgoing_tasks"
                     android:title="تحت التنفيذ"
+                    android:tint="@color/button_grey"
                     android:icon="@drawable/flag" />
                 <item
-                    android:id="@+id/item_auto_incoming_tasks"
+                    android:id="@+id/item_auto_outgoing_tasks"
                     android:title="المغلقة تلقائي"
+                    android:tint="@color/button_grey"
                     android:icon="@drawable/battery_alert" />
                 <item
-                    android:id="@+id/item_archive_incoming_tasks"
+                    android:id="@+id/item_archive_outgoing_tasks"
                     android:title="الارشيف"
+                    android:tint="@color/button_grey"
                     android:icon="@drawable/archive" />
             </group>
         </menu>
@@ -38,16 +41,19 @@
                 android:id="@+id/group2"
                 android:checkableBehavior="single">
                 <item
-                    android:id="@+id/item_pending_outgoing_tasks"
+                    android:id="@+id/item_pending_incoming_tasks"
                     android:title="تحت التنفيذ"
+                    android:tint="@color/button_grey"
                     android:icon="@drawable/flag" />
                 <item
-                    android:id="@+id/item_auto_outgoing_tasks"
+                    android:id="@+id/item_auto_incoming_tasks"
                     android:title="المغلقة تلقائي"
+                    android:tint="@color/button_grey"
                     android:icon="@drawable/battery_alert" />
                 <item
-                    android:id="@+id/item_archive_outgoing_tasks"
+                    android:id="@+id/item_archive_incoming_tasks"
                     android:title="الارشيف"
+                    android:tint="@color/button_grey"
                     android:icon="@drawable/archive" />
             </group>
         </menu>

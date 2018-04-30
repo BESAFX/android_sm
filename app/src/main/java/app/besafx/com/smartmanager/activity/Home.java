@@ -16,13 +16,14 @@ import android.view.View;
 import android.widget.TextView;
 import app.besafx.com.smartmanager.R;
 import app.besafx.com.smartmanager.entity.Person;
+import app.besafx.com.smartmanager.enums.FragmentType;
 import app.besafx.com.smartmanager.fragment.Menu1;
-import app.besafx.com.smartmanager.fragment.Menu2;
-import app.besafx.com.smartmanager.fragment.Menu3;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     protected static final String TAG = Home.class.getSimpleName();
+
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +41,13 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         setHeaderInfo(person, navigationView);
 
         displaySelectedScreen(R.id.item_pending_incoming_tasks);
+
     }
 
     private void setHeaderInfo(Person person, NavigationView navigationView) {
@@ -99,17 +101,51 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         //creating fragment object
         Fragment fragment = null;
+        Bundle bundle = new Bundle();
 
         //initializing the fragment object which is selected
         switch (itemId) {
+            case R.id.item_pending_outgoing_tasks:
+                fragment = new Menu1();
+                bundle.putSerializable("FragmentType", FragmentType.Outgoing_Pending_Tasks);
+                fragment.setArguments(bundle);
+                clearAllMenuItemSelection();
+                navigationView.getMenu().findItem(R.id.item_pending_outgoing_tasks).setChecked(true);
+                break;
+            case R.id.item_auto_outgoing_tasks:
+                fragment = new Menu1();
+                bundle.putSerializable("FragmentType", FragmentType.Outgoing_Auto_Tasks);
+                fragment.setArguments(bundle);
+                clearAllMenuItemSelection();
+                navigationView.getMenu().findItem(R.id.item_auto_outgoing_tasks).setChecked(true);
+                break;
+            case R.id.item_archive_outgoing_tasks:
+                fragment = new Menu1();
+                bundle.putSerializable("FragmentType", FragmentType.Outgoing_Archive_Tasks);
+                fragment.setArguments(bundle);
+                clearAllMenuItemSelection();
+                navigationView.getMenu().findItem(R.id.item_archive_outgoing_tasks).setChecked(true);
+                break;
             case R.id.item_pending_incoming_tasks:
                 fragment = new Menu1();
+                bundle.putSerializable("FragmentType", FragmentType.Incoming_Pending_Tasks);
+                fragment.setArguments(bundle);
+                clearAllMenuItemSelection();
+                navigationView.getMenu().findItem(R.id.item_pending_incoming_tasks).setChecked(true);
                 break;
             case R.id.item_auto_incoming_tasks:
-                fragment = new Menu2();
+                fragment = new Menu1();
+                bundle.putSerializable("FragmentType", FragmentType.Incoming_Auto_Tasks);
+                fragment.setArguments(bundle);
+                clearAllMenuItemSelection();
+                navigationView.getMenu().findItem(R.id.item_auto_incoming_tasks).setChecked(true);
                 break;
             case R.id.item_archive_incoming_tasks:
-                fragment = new Menu3();
+                fragment = new Menu1();
+                bundle.putSerializable("FragmentType", FragmentType.Incoming_Archive_Tasks);
+                fragment.setArguments(bundle);
+                clearAllMenuItemSelection();
+                navigationView.getMenu().findItem(R.id.item_archive_incoming_tasks).setChecked(true);
                 break;
         }
 
@@ -122,5 +158,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+    }
+
+    private void clearAllMenuItemSelection(){
+        navigationView.getMenu().findItem(R.id.item_pending_incoming_tasks).setChecked(false);
+        navigationView.getMenu().findItem(R.id.item_auto_incoming_tasks).setChecked(false);
+        navigationView.getMenu().findItem(R.id.item_archive_incoming_tasks).setChecked(false);
     }
 }

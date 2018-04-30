@@ -7,16 +7,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Spinner;
+import android.widget.*;
 import app.besafx.com.smartmanager.R;
 import app.besafx.com.smartmanager.activity.LoaderFragment;
 import app.besafx.com.smartmanager.activity.Main;
 import app.besafx.com.smartmanager.adapter.ListAdapterTask;
 import app.besafx.com.smartmanager.entity.Person;
 import app.besafx.com.smartmanager.entity.Task;
+import app.besafx.com.smartmanager.enums.FragmentType;
 import com.google.common.collect.Lists;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -34,23 +32,51 @@ public class Menu1 extends LoaderFragment {
 
     private ListAdapterTask myTasksAdapter;
 
+    private FragmentType fragmentType;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //returning our layout file
-        //change R.layout.fragment_menu_1 for each of your fragments
+        fragmentType = (FragmentType) getArguments().getSerializable("FragmentType");
         return inflater.inflate(R.layout.fragment_menu_1, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //you can set the title for your toolbar here for different fragments different titles
-        getActivity().setTitle("مهام تحت التنفيذ");
+
+        TextView textView_persons_combo_title = getView().findViewById(R.id.textView_persons_combo_title);
+
+        switch (fragmentType){
+            case Outgoing_Pending_Tasks:
+                getActivity().setTitle("تحت التنفيذ");
+                textView_persons_combo_title.setText("جهة التكليف");
+                break;
+            case Outgoing_Auto_Tasks:
+                getActivity().setTitle("مغلقة");
+                textView_persons_combo_title.setText("جهة التكليف");
+                break;
+            case Outgoing_Archive_Tasks:
+                getActivity().setTitle("الارشيف");
+                textView_persons_combo_title.setText("جهة التكليف");
+                break;
+            case Incoming_Pending_Tasks:
+                getActivity().setTitle("تحت التنفيذ");
+                textView_persons_combo_title.setText("الموظف");
+                break;
+            case Incoming_Auto_Tasks:
+                getActivity().setTitle("مغلقة");
+                textView_persons_combo_title.setText("الموظف");
+                break;
+            case Incoming_Archive_Tasks:
+                getActivity().setTitle("الارشيف");
+                textView_persons_combo_title.setText("الموظف");
+                break;
+        }
 
         initMyPersonsComboBox();
 
-        initMyPendingIncomingTasksComboBox();
+        initTasksComboBox();
 
         //Fetch persons data
         new FetchMyPersons().execute();
@@ -77,7 +103,7 @@ public class Menu1 extends LoaderFragment {
                 Person person = (Person) parent.getItemAtPosition(position);
 
                 //Fetch tasks data
-                new FetchPendingIncomingTasks(person).execute();
+                new FetchTasks(person).execute();
 
             }
 
@@ -88,7 +114,7 @@ public class Menu1 extends LoaderFragment {
         });
     }
 
-    private void initMyPendingIncomingTasksComboBox() {
+    private void initTasksComboBox() {
 
         ListView listView = (ListView) getView().findViewById(R.id.listView_persons);
 
@@ -146,11 +172,11 @@ public class Menu1 extends LoaderFragment {
 
     }
 
-    private class FetchPendingIncomingTasks extends AsyncTask<Void, Void, Task[]> {
+    private class FetchTasks extends AsyncTask<Void, Void, Task[]> {
 
         private Person selectedPerson;
 
-        public FetchPendingIncomingTasks(Person person) {
+        public FetchTasks(Person person) {
             this.selectedPerson = person;
         }
 
@@ -161,9 +187,29 @@ public class Menu1 extends LoaderFragment {
 
         @Override
         protected Task[] doInBackground(Void... params) {
-            final String url = getString(R.string.rest_url) + "/api/task/filter3?toPerson=" + selectedPerson.getId() + "&closeType=Pending";
 
-            Log.d(TAG, url);
+            String url = null;
+
+            switch (fragmentType){
+                case Outgoing_Pending_Tasks:
+                    url = getString(R.string.rest_url) + "/api/task/filter3?fromPerson=" + selectedPerson.getId() + "&closeType=Pending";
+                    break;
+                case Outgoing_Auto_Tasks:
+                    url = getString(R.string.rest_url) + "/api/task/filter3?fromPerson=" + selectedPerson.getId() + "&closeType=Auto";
+                    break;
+                case Outgoing_Archive_Tasks:
+                    url = getString(R.string.rest_url) + "/api/task/filter3?fromPerson=" + selectedPerson.getId() + "&closeType=Manual";
+                    break;
+                case Incoming_Pending_Tasks:
+                    url = getString(R.string.rest_url) + "/api/task/filter3?toPerson=" + selectedPerson.getId() + "&closeType=Pending";
+                    break;
+                case Incoming_Auto_Tasks:
+                    url = getString(R.string.rest_url) + "/api/task/filter3?toPerson=" + selectedPerson.getId() + "&closeType=Auto";
+                    break;
+                case Incoming_Archive_Tasks:
+                    url = getString(R.string.rest_url) + "/api/task/filter3?toPerson=" + selectedPerson.getId() + "&closeType=Manual";
+                    break;
+            }
 
             // Create a new RestTemplate instance
             RestTemplate restTemplate = new RestTemplate();

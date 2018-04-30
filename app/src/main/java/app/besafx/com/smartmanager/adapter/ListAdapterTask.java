@@ -1,7 +1,6 @@
 package app.besafx.com.smartmanager.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,15 +35,11 @@ public class ListAdapterTask extends ArrayAdapter<Task> {
         if (!tasks.isEmpty()) {
             Task currentTask = tasks.get(position);
 
-            Log.d(TAG, currentTask.getTitle());
-
             TextView task_code = (TextView) listItem.findViewById(R.id.task_code);
-            TextView task_from_person = (TextView) listItem.findViewById(R.id.task_from_person);
-            TextView task_to_person = (TextView) listItem.findViewById(R.id.task_to_person);
+            TextView task_title = (TextView) listItem.findViewById(R.id.task_title);
 
             task_code.setText(currentTask.getCode().toString());
-            task_from_person.setText(currentTask.getTitle());
-            task_to_person.setText(currentTask.getTitle());
+            task_title.setText(currentTask.getTitle());
         }
 
         return listItem;

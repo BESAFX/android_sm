@@ -3,94 +3,79 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background">
+    android:background="@color/medium_grey">
+
     <LinearLayout
+            android:id="@+id/logo_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_marginBottom="400dp">
+            android:gravity="top|center">
         <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/logo" android:paddingTop="20dp"/>
+                android:layout_marginTop="25dp"
+                android:src="@drawable/logo"
+        />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:orientation="vertical"
+        android:gravity="top|center"
+        android:layout_marginTop="150dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
-        <LinearLayout
+
+        <TextView
+            android:id="@+id/error_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_marginBottom="20dp">
-                <TextView
-                    android:id="@+id/error_message"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Message"
-                    android:background="#E91E63"
-                    android:textColor="#d9e5f3"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:padding="16dp"
-                    android:textSize="12dp"
-                    android:letterSpacing="0.2"
-                    android:visibility="invisible" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="16dp">
-                <EditText
-                    android:id="@+id/user_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="اسم المستخدم"
-                    android:textColorHint="#d9e5f3"
-                    android:drawableRight="@drawable/ic_person_black_24dp"
-                    android:background="#00000000"
-                    android:letterSpacing="0.1"
-                    android:textSize="14dp"
-                    android:gravity="right"
-                    android:inputType="textWebEmailAddress"
-                    android:textColor="#fff"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#4a5a71"></LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="16dp">
-                <EditText android:id="@+id/user_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="كلمة المرور"
-                    android:textColorHint="#d9e5f3"
-                    android:drawableRight="@drawable/ic_lock_black_24dp"
-                    android:background="#00000000"
-                    android:letterSpacing="0.1"
-                    android:textSize="14dp"
-                    android:gravity="right"
-                    android:textColor="#fff"
-                    android:inputType="textWebPassword" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#4a5a71"></LinearLayout>
-        </LinearLayout>
+            android:layout_marginBottom="15dp"
+            android:text="Message"
+            android:background="#E91E63"
+            android:textColor="#d9e5f3"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:padding="16dp"
+            android:textSize="12dp"
+            android:letterSpacing="0.2"
+            android:visibility="invisible" />
+
+        <EditText
+            android:id="@+id/user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:hint="اسم المستخدم"
+            android:textColorHint="#424242"
+            android:drawableRight="@drawable/ic_person_black_24dp"
+            android:background="#B3E5FC"
+            android:letterSpacing="0.1"
+            android:textSize="14dp"
+            android:gravity="right"
+            android:inputType="textWebEmailAddress"
+            android:padding="10dp"
+            android:textColor="#212121" />
+
+        <EditText
+            android:id="@+id/user_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:hint="كلمة المرور"
+            android:textColorHint="#424242"
+            android:drawableRight="@drawable/ic_lock_black_24dp"
+            android:background="#B3E5FC"
+            android:letterSpacing="0.1"
+            android:textSize="14dp"
+            android:gravity="right"
+            android:textColor="#212121"
+            android:padding="10dp"
+            android:inputType="textWebPassword" />
+
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
